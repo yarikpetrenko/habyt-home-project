@@ -1,8 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Habyt Frontend Take-Home Assignment
+
+This is a take-home assignment for frontend developer candidates at Habyt. The assignment aims to assess your ability to implement a filter interface for property listings using React and Next.js.
 
 ## Getting Started
 
-First, run the development server:
+First, clone this repository and install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +22,94 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Assignment Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In this assignment, you will be working on a listings page that displays available properties. The page already has a basic structure in place, but your task is to enhance the filtering functionality to match the Habyt design and improve the user experience.
 
-## Learn More
+### Existing Features
 
-To learn more about Next.js, take a look at the following resources:
+1. A listings page that displays properties from a mock API
+2. Basic filtering functionality including:
+   - Filter by city
+   - Filter by rent range
+   - Filter by move-in date
+   - Filter by property type
+3. Pagination of results
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Your Tasks
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Enhance the Filter UI**: 
+   - Improve the visual design of the filter interface based on [Habyt's design principles](https://www.habyt.com)
+   - Add additional filters from the API specification (see the OpenAPI spec in `openapi.yml`)
+   - Implement dynamic filter options that update based on available data
 
-## Deploy on Vercel
+2. **Improve User Experience**:
+   - Add loading states for filters and results
+   - Implement client-side caching to minimize API requests
+   - Ensure responsive behavior on mobile devices
+   - Add clear feedback when no results match filters
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Additional Features** (Choose at least 2):
+   - Implement a map view of properties using a mapping library
+   - Add a "save filters" feature with local storage
+   - Create a detailed view for individual listings
+   - Add sorting options for results (by price, availability date, etc.)
+   - Implement "lazy loading" of listing images for better performance
+   - Implement pagination with server-side support (optimize the API route for better performance with large datasets)
+   - Add accessibility features for keyboard navigation and screen readers
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Technical Details
+
+### API Endpoint
+
+A mock API endpoint is available at `/api/listings` that returns property data. The endpoint accepts query parameters for filtering as documented in the OpenAPI specification (`openapi.yml`).
+
+Key filter parameters include:
+- `city`: Filter by city name
+- `rentFrom` and `rentTo`: Filter by rent range
+- `bookableOn`: Filter by availability date
+- `shareType`: Filter by property type (PrivateApartment, Studio, PrivateRoom, SharedRoom)
+- `page` and `pageSize`: For pagination (0-based page index)
+
+### Data Structure
+
+The response from the API follows this structure:
+
+```typescript
+{
+  metadata: {
+    pagination: {
+      currentPage: number;
+      currentPageSize: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    }
+  },
+  data: Listing[]
+}
+```
+
+The `Listing` type is defined in `app/types/listing.ts` and follows the schema in the OpenAPI specification.
+
+## Evaluation Criteria
+
+Your submission will be evaluated based on:
+
+1. **Code Quality**: Well-structured, maintainable code that follows best practices
+2. **User Experience**: Intuitive interface with responsive design
+3. **Technical Implementation**: Effective use of React hooks, state management, and Next.js features
+4. **Visual Design**: Clean, professional UI that aligns with Habyt's design
+5. **Performance**: Efficient rendering and data fetching strategies
+
+## Submission
+
+Please submit your solution as a GitHub repository or a compressed archive of your project. Include a brief README explaining your approach, any architectural decisions you made, and instructions for running your solution.
+
+Feel free to add any libraries or tools that you think would help you complete the assignment, but be prepared to explain your choices.
+
+Good luck!
