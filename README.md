@@ -66,7 +66,7 @@ In this assignment, you will be working on a listings page that displays availab
 
 ### API Endpoint
 
-A mock API endpoint is available at `/api/listings` that returns property data. The endpoint accepts query parameters for filtering as documented in the OpenAPI specification (`openapi.yml`).
+A mock API endpoint is available at `/api/listings` that returns property data. The endpoint accepts some query parameters for filtering as based upon our current API as documentated in the OpenAPI specification (`openapi.yml`).
 
 Key filter parameters include:
 - `city`: Filter by city name
