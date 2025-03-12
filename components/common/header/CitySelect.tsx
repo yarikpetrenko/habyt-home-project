@@ -1,13 +1,6 @@
 import { FC } from "react";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { getListings } from "@/actions/listings";
+import { CitySelectContent } from "./CitySelectContent";
 
 const CitySelect: FC = async () => {
   const res = await getListings({});
@@ -19,23 +12,10 @@ const CitySelect: FC = async () => {
   const listings = res.data;
 
   const cities = Array.from(
-    new Set(["All Cities", ...listings.map((listing) => listing.city)]),
+    new Set(listings.map((listing) => listing.city)),
   ).sort();
 
-  return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>City</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            {cities.map((city) => (
-              <NavigationMenuLink key={city}>{city}</NavigationMenuLink>
-            ))}
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
+  return <CitySelectContent cities={cities} />;
 };
 
 export { CitySelect };
