@@ -1,7 +1,7 @@
 export interface Listing {
   referenceId: string;
   bookable: boolean;
-  shareType: 'PrivateApartment' | 'Studio' | 'PrivateRoom' | 'SharedRoom';
+  shareType: "PrivateApartment" | "Studio" | "PrivateRoom" | "SharedRoom";
   currency: string;
   rentGross: number;
   rentNet: number;
@@ -25,14 +25,14 @@ export interface Listing {
   leaseConditions: {
     noticePeriod: {
       amount: number;
-      unit: 'Months' | 'Days';
-      type: 'Any' | 'MiddleOrEnd' | 'End';
+      unit: "Months" | "Days";
+      type: "Any" | "MiddleOrEnd" | "End";
     };
     minimumStay: TimeUnit;
     maximumStay: TimeUnit;
   };
   roomArea: number;
-  roomAreaUnit: 'Sqm' | 'Sqft';
+  roomAreaUnit: "Sqm" | "Sqft";
   roomAmenities: string[];
   roomDescriptions: Array<{
     language: string;
@@ -47,7 +47,7 @@ export interface Listing {
   apartmentBedroomCount: number;
   apartmentBathroomCount: number;
   apartmentArea: number;
-  apartmentAreaUnit: 'Sqm' | 'Sqft';
+  apartmentAreaUnit: "Sqm" | "Sqft";
   apartmentAmenities: string[];
   apartmentDescriptions: Array<{
     language: string;
@@ -76,21 +76,5 @@ export interface Listing {
 
 export interface TimeUnit {
   amount: number;
-  unit: 'Months' | 'Days';
+  unit: "Months" | "Days";
 }
-
-export interface APIResponse {
-  metadata: {
-    pagination: {
-      currentPage: number;
-      currentPageSize: number;
-      totalPages: number;
-      hasNextPage: boolean;
-      hasPrevPage: boolean;
-    };
-    filters?: {
-      referenceId?: string;
-    };
-  };
-  data: Listing[];
-} 

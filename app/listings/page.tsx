@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import FilterBar from '../components/FilterBar';
-import ListingCard from '../components/ListingCard';
-import { Listing, APIResponse } from '../types/listing';
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import ListingCard from "../components/ListingCard";
+import { Listing, APIResponse } from "../types/listing";
+import { FilterBar } from "./components/filter-bar";
 
 export default function Listings() {
   const searchParams = useSearchParams();
@@ -17,19 +17,21 @@ export default function Listings() {
     hasNextPage: false,
     hasPrevPage: false,
   });
-  
+
   useEffect(() => {
     async function fetchListings() {
       setLoading(true);
       try {
         // Create URL with search parameters
         const queryString = searchParams.toString();
-        const response = await fetch(`/api/listings${queryString ? `?${queryString}` : ''}`);
-        
+        const response = await fetch(
+          `/api/listings${queryString ? `?${queryString}` : ""}`,
+        );
+
         if (!response.ok) {
-          throw new Error('Failed to fetch listings');
+          throw new Error("Failed to fetch listings");
         }
-        
+
         const data: APIResponse = await response.json();
         setListings(data.data);
         setPagination({
@@ -39,7 +41,7 @@ export default function Listings() {
           hasPrevPage: data.metadata.pagination.hasPrevPage,
         });
       } catch (err) {
-        setError('Error loading listings. Please try again later.');
+        setError("Error loading listings. Please try again later.");
         console.error(err);
       } finally {
         setLoading(false);
@@ -53,92 +55,98 @@ export default function Listings() {
     // Create a new URLSearchParams object from the current one
     const params = new URLSearchParams(searchParams);
     // Update or add the page parameter
-    params.set('page', page.toString());
-    
+    params.set("page", page.toString());
+
     // Update the URL without reloading the page
-    window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
-    
+    window.history.pushState(
+      {},
+      "",
+      `${window.location.pathname}?${params.toString()}`,
+    );
+
     // Manually trigger a new fetch since we're not using Next.js router to navigate
-    const event = new Event('popstate');
+    const event = new Event("popstate");
     window.dispatchEvent(event);
   };
 
   return (
-    <main className="max-w-7xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Available Listings</h1>
-      
+    <main className="mx-auto max-w-7xl p-4">
       {/* Filter section */}
       <FilterBar />
-      
+
       {/* Loading state */}
       {loading && (
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="flex items-center justify-center py-12">
+          <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
-      
+
       {/* Error state */}
       {error && !loading && (
-        <div className="p-4 text-red-500 bg-red-100 rounded-md mb-6">
+        <div className="mb-6 rounded-md bg-red-100 p-4 text-red-500">
           {error}
         </div>
       )}
-      
+
       {/* Empty state */}
       {!loading && !error && listings.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <h3 className="text-xl font-medium text-gray-600 mb-2">No listings found</h3>
-          <p className="text-gray-500">Try adjusting your filters to find more results.</p>
+        <div className="rounded-lg bg-gray-50 py-12 text-center">
+          <h3 className="mb-2 text-xl font-medium text-gray-600">
+            No listings found
+          </h3>
+          <p className="text-gray-500">
+            Try adjusting your filters to find more results.
+          </p>
         </div>
       )}
-      
+
       {/* Listings grid */}
       {!loading && !error && listings.length > 0 && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {listings.map((listing) => (
               <ListingCard key={listing.referenceId} listing={listing} />
             ))}
           </div>
-          
+
           {/* Pagination */}
           {pagination.totalPages > 1 && (
-            <div className="flex justify-center my-6">
+            <div className="my-6 flex justify-center">
               <div className="flex space-x-1">
                 <button
                   onClick={() => handlePageChange(pagination.currentPage - 1)}
                   disabled={!pagination.hasPrevPage}
-                  className={`px-4 py-2 rounded-md ${
+                  className={`rounded-md px-4 py-2 ${
                     pagination.hasPrevPage
-                      ? 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? "border border-gray-300 bg-white text-gray-800 hover:bg-gray-100"
+                      : "cursor-not-allowed bg-gray-100 text-gray-400"
                   }`}
                 >
                   Previous
                 </button>
-                
+
                 {/* Page numbers */}
                 {Array.from({ length: pagination.totalPages }, (_, i) => (
                   <button
                     key={i}
                     onClick={() => handlePageChange(i)}
-                    className={`px-4 py-2 rounded-md ${
+                    className={`rounded-md px-4 py-2 ${
                       pagination.currentPage === i
-                        ? 'bg-blue-600 text-white border border-blue-600'
-                        : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                        ? "border border-blue-600 bg-blue-600 text-white"
+                        : "border border-gray-300 bg-white text-gray-800 hover:bg-gray-100"
                     }`}
                   >
                     {i + 1}
                   </button>
                 ))}
-                
+
                 <button
                   onClick={() => handlePageChange(pagination.currentPage + 1)}
                   disabled={!pagination.hasNextPage}
-                  className={`px-4 py-2 rounded-md ${
+                  className={`rounded-md px-4 py-2 ${
                     pagination.hasNextPage
-                      ? 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? "border border-gray-300 bg-white text-gray-800 hover:bg-gray-100"
+                      : "cursor-not-allowed bg-gray-100 text-gray-400"
                   }`}
                 >
                   Next
@@ -150,4 +158,4 @@ export default function Listings() {
       )}
     </main>
   );
-} 
+}
