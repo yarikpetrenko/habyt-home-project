@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PropertyTypeFilter } from "./PropertyTypeFilter";
+import { MoveInDateFilter } from "./MoveInDateFilter";
 
 function FilterBar() {
   const router = useRouter();
@@ -54,29 +55,9 @@ function FilterBar() {
       <h2 className="mb-4 text-lg font-semibold">Filter Listings</h2>
 
       <div className="flex w-full items-center justify-between">
-        {/* Move-in date filter */}
-        <div>
-          <label
-            htmlFor="bookableOn"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Move-in Date
-          </label>
-          <input
-            type="date"
-            id="bookableOn"
-            value={bookableOn}
-            onChange={(e) => setBookableOn(e.target.value)}
-            className="w-full rounded-md border border-gray-300 p-2"
-          />
-        </div>
+        <MoveInDateFilter />
 
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Property Type
-          </label>
-          <PropertyTypeFilter />
-        </div>
+        <PropertyTypeFilter />
 
         {/* Price range filter */}
         <div>

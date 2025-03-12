@@ -38,14 +38,17 @@ const useFilterListings = () => {
     ({
       city,
       propertyType,
+      moveInDate,
     }: {
       city?: string | null;
       propertyType?: string[] | null;
+      moveInDate?: string | null;
     }) => {
       const newSearchParams = new URLSearchParams(searchParams);
 
       handleFilter("city", city, newSearchParams);
       handleFilter("shareType", propertyType, newSearchParams);
+      handleFilter("bookableOn", moveInDate, newSearchParams);
 
       router.replace(createUrl(pathname, newSearchParams));
     },

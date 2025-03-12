@@ -56,6 +56,7 @@ const PropertyTypeFilter: FC = () => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          label="Property Type"
           className="w-[200px] justify-between"
         >
           <span className="truncate">
