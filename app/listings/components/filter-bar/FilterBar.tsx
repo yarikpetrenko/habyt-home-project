@@ -1,16 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import OptionSelectFilter from "../../../components/OptionSelectFilter";
-
-// Share types based on the API schema
-const shareTypes = [
-  { label: "Private Apartment", value: "PrivateApartment" },
-  { label: "Studio", value: "Studio" },
-  { label: "Private Room", value: "PrivateRoom" },
-  { label: "Shared Room", value: "SharedRoom" },
-];
+import { PropertyTypeFilter } from "./PropertyTypeFilter";
 
 function FilterBar() {
   const router = useRouter();
@@ -31,30 +23,6 @@ function FilterBar() {
   const [bookableOn, setBookableOn] = useState<string>(
     searchParams.get("bookableOn") || "",
   );
-
-  // Fetch unique cities for dropdown
-  const [cities, setCities] = useState<string[]>([]);
-
-  useEffect(() => {
-    async function fetchCities() {
-      try {
-        const response = await fetch("/api/listings");
-        if (!response.ok) throw new Error("Failed to fetch listings");
-        const data = await response.json();
-
-        // Extract unique cities
-        const uniqueCities = Array.from(
-          new Set(data.data.map((listing: any) => listing.city)),
-        ).sort();
-
-        setCities(uniqueCities as string[]);
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      }
-    }
-
-    fetchCities();
-  }, []);
 
   const applyFilters = () => {
     const params = new URLSearchParams();
@@ -82,38 +50,39 @@ function FilterBar() {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow mb-6">
-      <h2 className="text-lg font-semibold mb-4">Filter Listings</h2>
+    <div className="mb-6 rounded-lg bg-white p-4 shadow">
+      <h2 className="mb-4 text-lg font-semibold">Filter Listings</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        {/* City filter */}
+      <div className="flex w-full items-center justify-between">
+        {/* Move-in date filter */}
         <div>
           <label
-            htmlFor="city"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            htmlFor="bookableOn"
+            className="mb-1 block text-sm font-medium text-gray-700"
           >
-            City
+            Move-in Date
           </label>
-          <select
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          >
-            <option value="">All Cities</option>
-            {cities.map((cityName) => (
-              <option key={cityName} value={cityName}>
-                {cityName}
-              </option>
-            ))}
-          </select>
+          <input
+            type="date"
+            id="bookableOn"
+            value={bookableOn}
+            onChange={(e) => setBookableOn(e.target.value)}
+            className="w-full rounded-md border border-gray-300 p-2"
+          />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Property Type
+          </label>
+          <PropertyTypeFilter />
         </div>
 
         {/* Price range filter */}
         <div>
           <label
             htmlFor="rentFrom"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="mb-1 block text-sm font-medium text-gray-700"
           >
             Monthly Rent
           </label>
@@ -124,7 +93,7 @@ function FilterBar() {
               placeholder="Min"
               value={rentFrom}
               onChange={(e) => setRentFrom(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full rounded-md border border-gray-300 p-2"
             />
             <span>-</span>
             <input
@@ -133,56 +102,10 @@ function FilterBar() {
               placeholder="Max"
               value={rentTo}
               onChange={(e) => setRentTo(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full rounded-md border border-gray-300 p-2"
             />
           </div>
         </div>
-
-        {/* Move-in date filter */}
-        <div>
-          <label
-            htmlFor="bookableOn"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Move-in Date
-          </label>
-          <input
-            type="date"
-            id="bookableOn"
-            value={bookableOn}
-            onChange={(e) => setBookableOn(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      {/* Property type filter */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Property Type
-        </label>
-        <OptionSelectFilter
-          label="Property Type"
-          options={shareTypes}
-          selectedValues={selectedShareTypes}
-          onChange={setSelectedShareTypes}
-        />
-      </div>
-
-      {/* Action buttons */}
-      <div className="flex justify-end space-x-2">
-        <button
-          onClick={resetFilters}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-        >
-          Reset
-        </button>
-        <button
-          onClick={applyFilters}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-        >
-          Apply Filters
-        </button>
       </div>
     </div>
   );

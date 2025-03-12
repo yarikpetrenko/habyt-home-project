@@ -8,8 +8,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { createUrl } from "@/utils";
+import { useSearchParams } from "next/navigation";
+import { useFilterListings } from "@/hooks";
 
 const ALL_CITIES_OPTION = "All Cities";
 
@@ -18,9 +18,9 @@ interface Props {
 }
 
 const CitySelectContent: FC<Props> = ({ cities }) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const { applyFilter } = useFilterListings();
 
   const currentCity = useMemo(
     (): string | null => searchParams.get("city"),
@@ -29,22 +29,16 @@ const CitySelectContent: FC<Props> = ({ cities }) => {
 
   const handleSelect = useCallback(
     (city: string) => {
-      const newSearchParams = new URLSearchParams(searchParams);
-      if (city === ALL_CITIES_OPTION) {
-        newSearchParams.delete("city");
-      } else {
-        newSearchParams.set("city", city);
-      }
-      router.replace(createUrl(pathname, newSearchParams));
+      applyFilter({ city: city === ALL_CITIES_OPTION ? null : city });
     },
-    [router, pathname, searchParams],
+    [applyFilter],
   );
 
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="cursor-pointer">
+          <NavigationMenuTrigger className="cursor-pointer text-base font-medium">
             {currentCity ? currentCity : "Find A Home"}
           </NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -52,7 +46,7 @@ const CitySelectContent: FC<Props> = ({ cities }) => {
               {[ALL_CITIES_OPTION, ...cities].map((city) => (
                 <button
                   key={city}
-                  className="cursor-pointer hover:underline hover:underline-offset-2"
+                  className="cursor-pointer font-medium hover:underline hover:underline-offset-2"
                   onClick={() => handleSelect(city)}
                 >
                   {city}
