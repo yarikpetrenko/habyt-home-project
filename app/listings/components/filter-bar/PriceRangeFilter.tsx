@@ -1,15 +1,8 @@
-import { Input } from "@/components/ui/input";
 import { useFilterListings } from "@/hooks";
 import { clamp } from "@/utils";
-import {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { NumberFilterInput } from "./NumberFilterInput";
 
 const PriceRangeFilter: FC = () => {
   const { filter, applyFilter } = useFilterListings();
@@ -49,47 +42,9 @@ const PriceRangeFilter: FC = () => {
 
   return (
     <div className="flex">
-      <PriceRangeFilterInput value={min} setValue={setMin} label="Price Min" />
-      <PriceRangeFilterInput value={max} setValue={setMax} label="Price Max" />
+      <NumberFilterInput value={min} setValue={setMin} label="Price Min" />
+      <NumberFilterInput value={max} setValue={setMax} label="Price Max" />
     </div>
-  );
-};
-
-interface PriceRangeFilterInputProps {
-  value: number | null;
-  setValue: (value: number | null) => void;
-  label: string;
-}
-
-const PriceRangeFilterInput: FC<PriceRangeFilterInputProps> = ({
-  value,
-  setValue,
-  label,
-}) => {
-  const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      const targetValue = e.currentTarget.value.trim();
-      const newValue: number = targetValue ? parseInt(targetValue) : 0;
-      if (!isFinite(newValue)) {
-        return;
-      }
-      const clampedValue: number = clamp(newValue, 0, Infinity);
-      if (clampedValue === 0) {
-        setValue(null);
-        return;
-      }
-      setValue(clampedValue);
-    },
-    [setValue],
-  );
-
-  return (
-    <Input
-      label={label}
-      className="rounded-none"
-      value={value === null ? "" : value.toString()}
-      onChange={handleInputChange}
-    />
   );
 };
 

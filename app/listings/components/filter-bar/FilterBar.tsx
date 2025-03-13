@@ -1,6 +1,7 @@
 import { PropertyTypeFilter } from "./PropertyTypeFilter";
 import { MoveInDateFilter } from "./MoveInDateFilter";
 import { PriceRangeFilter } from "./PriceRangeFilter";
+import { AdvancedFilters } from "./AdvancedFilters";
 
 function FilterBar() {
   return (
@@ -10,6 +11,7 @@ function FilterBar() {
         <MoveInDateFilter />
         <PropertyTypeFilter />
         <PriceRangeFilter />
+        <AdvancedFilters />
       </div>
     </div>
   );

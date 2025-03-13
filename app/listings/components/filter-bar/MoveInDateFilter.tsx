@@ -21,7 +21,7 @@ const MoveInDateFilter: FC = () => {
   const initDate = useMemo((): Date => {
     try {
       const value = moment(filter.moveInDate);
-      if (value.isBefore(moment().subtract(1, "day"))) {
+      if (value.isBefore(moment().subtract(1, "day")) || !value.isValid()) {
         throw new Error("Invalid date");
       }
       return value.toDate();

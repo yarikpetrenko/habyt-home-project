@@ -15,6 +15,7 @@ const useFilterListings = () => {
     moveInDate: string | null;
     rentFrom: string | null;
     rentTo: string | null;
+    bedroomsFrom: string | null;
   } => {
     return {
       city: searchParams.get("city"),
@@ -22,6 +23,7 @@ const useFilterListings = () => {
       moveInDate: searchParams.get("bookableOn"),
       rentFrom: searchParams.get("rentFrom"),
       rentTo: searchParams.get("rentTo"),
+      bedroomsFrom: searchParams.get("bedroomsFrom"),
     };
   }, [searchParams]);
 
@@ -57,12 +59,14 @@ const useFilterListings = () => {
       moveInDate,
       rentFrom,
       rentTo,
+      bedroomsFrom,
     }: {
       city?: string | null;
       propertyType?: string[] | null;
       moveInDate?: string | null;
       rentFrom?: string | null;
       rentTo?: string | null;
+      bedroomsFrom?: string | null;
     }) => {
       const newSearchParams = new URLSearchParams(searchParams);
 
@@ -71,6 +75,7 @@ const useFilterListings = () => {
       handleFilter("bookableOn", moveInDate, newSearchParams);
       handleFilter("rentFrom", rentFrom, newSearchParams);
       handleFilter("rentTo", rentTo, newSearchParams);
+      handleFilter("bedroomsFrom", bedroomsFrom, newSearchParams);
 
       router.replace(createUrl(pathname, newSearchParams));
     },
