@@ -16,7 +16,10 @@ const fetcher: Fetcher<
   GetListingsResponse,
   [string, URLSearchParams]
 > = async ([path, params]) => {
-  const res = await fetch(createUrl(path, params));
+  const res = await fetch(createUrl(path, params), {
+    cache: "force-cache",
+    next: { revalidate: 60 },
+  });
   const resJson = await res.json();
   return resJson;
 };
