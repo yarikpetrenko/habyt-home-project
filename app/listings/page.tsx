@@ -1,55 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Listing, APIResponse } from "../types/listing";
 import { FilterBar } from "./components/filter-bar";
 import { ListingCard } from "./components/listing-card";
+import { useListings } from "@/hooks";
 
 export default function Listings() {
   const searchParams = useSearchParams();
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [pagination, setPagination] = useState({
-    currentPage: 0,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPrevPage: false,
-  });
-
-  useEffect(() => {
-    async function fetchListings() {
-      setLoading(true);
-      try {
-        // Create URL with search parameters
-        const queryString = searchParams.toString();
-        const response = await fetch(
-          `/api/listings${queryString ? `?${queryString}` : ""}`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch listings");
-        }
-
-        const data: APIResponse = await response.json();
-        setListings(data.data);
-        setPagination({
-          currentPage: data.metadata.pagination.currentPage,
-          totalPages: data.metadata.pagination.totalPages,
-          hasNextPage: data.metadata.pagination.hasNextPage,
-          hasPrevPage: data.metadata.pagination.hasPrevPage,
-        });
-      } catch (err) {
-        setError("Error loading listings. Please try again later.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchListings();
-  }, [searchParams]);
+  const { listings, pagination, error, isLoading } = useListings();
 
   const handlePageChange = (page: number) => {
     // Create a new URLSearchParams object from the current one
@@ -75,21 +33,21 @@ export default function Listings() {
       <FilterBar />
 
       {/* Loading state */}
-      {loading && (
+      {isLoading && (
         <div className="flex items-center justify-center py-12">
           <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
         </div>
       )}
 
       {/* Error state */}
-      {error && !loading && (
+      {error && !isLoading && (
         <div className="mb-6 rounded-md bg-red-100 p-4 text-red-500">
           {error}
         </div>
       )}
 
       {/* Empty state */}
-      {!loading && !error && listings.length === 0 && (
+      {!isLoading && !error && listings && listings.length === 0 && (
         <div className="rounded-lg bg-gray-50 py-12 text-center">
           <h3 className="mb-2 text-xl font-medium text-gray-600">
             No listings found
@@ -101,7 +59,7 @@ export default function Listings() {
       )}
 
       {/* Listings grid */}
-      {!loading && !error && listings.length > 0 && (
+      {!isLoading && !error && listings && listings.length > 0 && (
         <>
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {listings.map((listing) => (
