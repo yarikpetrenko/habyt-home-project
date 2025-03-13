@@ -1,5 +1,5 @@
 import { FC, Suspense } from "react";
-import { CitySelect } from "./CitySelect";
+import { CitySelect, CitySelectFallback } from "./CitySelect";
 
 const Header: FC = () => {
   return (
@@ -7,7 +7,7 @@ const Header: FC = () => {
       <div className="mx-auto max-w-7xl p-4">
         <div className="flex items-center gap-x-8">
           <h1 className="text-3xl font-bold">Available Listings</h1>
-          <Suspense fallback={"loading...."}>
+          <Suspense fallback={<CitySelectFallback />}>
             <CitySelect />
           </Suspense>
         </div>

@@ -1,14 +1,15 @@
 "use client";
 
-import { FC, useCallback, useMemo } from "react";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useFilterListings } from "@/hooks";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/utils";
 
 const ALL_CITIES_OPTION = "All Cities";
 
@@ -18,6 +19,7 @@ interface Props {
 
 const CitySelectContent: FC<Props> = ({ cities }) => {
   const { filter, applyFilter } = useFilterListings();
+  const [open, setOpen] = useState<boolean>(false);
 
   const currentCity = useMemo((): string | null => {
     const value = filter.city;
@@ -35,28 +37,30 @@ const CitySelectContent: FC<Props> = ({ cities }) => {
   );
 
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="cursor-pointer text-base font-medium">
-            {currentCity ? currentCity : "Find A Home"}
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <div className="grid gap-y-2 p-2">
-              {[ALL_CITIES_OPTION, ...cities].map((city) => (
-                <button
-                  key={city}
-                  className="cursor-pointer font-medium hover:underline hover:underline-offset-2"
-                  onClick={() => handleSelect(city)}
-                >
-                  {city}
-                </button>
-              ))}
-            </div>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <HoverCard open={open} onOpenChange={setOpen} openDelay={100}>
+      <HoverCardTrigger asChild>
+        <Button variant="ghost" className="text-base font-medium">
+          <span>{currentCity ? currentCity : "Find A Home"}</span>
+          <ChevronDown
+            className={cn("size-3 transition-transform", open && "rotate-180")}
+          />
+        </Button>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-46">
+        <div className="grid gap-y-1">
+          {[ALL_CITIES_OPTION, ...cities].map((city) => (
+            <Button
+              key={city}
+              variant="link"
+              onClick={() => handleSelect(city)}
+              className="font-medium"
+            >
+              {city}
+            </Button>
+          ))}
+        </div>
+      </HoverCardContent>
+    </HoverCard>
   );
 };
 

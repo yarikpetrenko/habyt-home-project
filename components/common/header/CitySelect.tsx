@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { getListings } from "@/actions/listings";
 import { CitySelectContent } from "./CitySelectContent";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CitySelect: FC = async () => {
   const res = await getListings({});
@@ -18,4 +19,8 @@ const CitySelect: FC = async () => {
   return <CitySelectContent cities={cities} />;
 };
 
-export { CitySelect };
+const CitySelectFallback: FC = () => {
+  return <Skeleton className="h-10 w-32" />;
+};
+
+export { CitySelect, CitySelectFallback };
