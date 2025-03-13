@@ -6,15 +6,35 @@ import {
   FC,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 const PriceRangeFilter: FC = () => {
-  const { applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useFilterListings();
 
-  const [min, setMin] = useState<number | null>(null);
-  const [max, setMax] = useState<number | null>(null);
+  const init = useMemo(() => {
+    const parse = (value: string | null): number | null => {
+      const newValue: number = value ? parseInt(value) : 0;
+      if (!isFinite(newValue)) {
+        return null;
+      }
+      const clampedValue: number = clamp(newValue, 0, Infinity);
+      if (clampedValue === 0) {
+        return null;
+      }
+      return clampedValue;
+    };
+
+    return {
+      min: parse(filter.rentFrom),
+      max: parse(filter.rentTo),
+    };
+  }, [filter.rentFrom, filter.rentTo]);
+
+  const [min, setMin] = useState<number | null>(init.min);
+  const [max, setMax] = useState<number | null>(init.max);
 
   const debounced = useDebouncedCallback(
     (rentFrom: string | null, rentTo: string | null) => {

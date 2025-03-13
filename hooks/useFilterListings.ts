@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/utils";
 
@@ -8,6 +8,22 @@ const useFilterListings = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const filter = useMemo((): {
+    city: string | null;
+    propertyType: string[];
+    moveInDate: string | null;
+    rentFrom: string | null;
+    rentTo: string | null;
+  } => {
+    return {
+      city: searchParams.get("city"),
+      propertyType: searchParams.getAll("shareType"),
+      moveInDate: searchParams.get("bookableOn"),
+      rentFrom: searchParams.get("rentFrom"),
+      rentTo: searchParams.get("rentTo"),
+    };
+  }, [searchParams]);
 
   const handleFilter = useCallback(
     (
@@ -61,7 +77,7 @@ const useFilterListings = () => {
     [router, pathname, searchParams, handleFilter],
   );
 
-  return { applyFilter };
+  return { filter, applyFilter };
 };
 
 export { useFilterListings };

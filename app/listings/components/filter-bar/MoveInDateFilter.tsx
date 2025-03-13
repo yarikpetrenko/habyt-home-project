@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -16,10 +16,22 @@ import {
 import { useFilterListings } from "@/hooks";
 
 const MoveInDateFilter: FC = () => {
-  const { applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useFilterListings();
+
+  const initDate = useMemo((): Date => {
+    try {
+      const value = moment(filter.moveInDate);
+      if (value.isBefore(moment().subtract(1, "day"))) {
+        throw new Error("Invalid date");
+      }
+      return value.toDate();
+    } catch {
+      return new Date();
+    }
+  }, [filter.moveInDate]);
 
   const [open, setOpen] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(initDate);
 
   useEffect(() => {
     applyFilter({ moveInDate: moment(date).format("YYYY-MM-DD") });

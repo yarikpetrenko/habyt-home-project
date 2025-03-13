@@ -8,7 +8,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useSearchParams } from "next/navigation";
 import { useFilterListings } from "@/hooks";
 
 const ALL_CITIES_OPTION = "All Cities";
@@ -18,14 +17,15 @@ interface Props {
 }
 
 const CitySelectContent: FC<Props> = ({ cities }) => {
-  const searchParams = useSearchParams();
+  const { filter, applyFilter } = useFilterListings();
 
-  const { applyFilter } = useFilterListings();
-
-  const currentCity = useMemo(
-    (): string | null => searchParams.get("city"),
-    [searchParams],
-  );
+  const currentCity = useMemo((): string | null => {
+    const value = filter.city;
+    if (!value || !cities.includes(value)) {
+      return null;
+    }
+    return value;
+  }, [cities, filter.city]);
 
   const handleSelect = useCallback(
     (city: string) => {

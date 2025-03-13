@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { PROPERTY_TYPES } from "@/constants";
@@ -21,10 +21,24 @@ type Option = {
 };
 
 const PropertyTypeFilter: FC = () => {
-  const { applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useFilterListings();
+
+  const initValue = useMemo((): Option[] => {
+    const arr: Option[] = [];
+
+    filter.propertyType.forEach((value) => {
+      const candidate = PROPERTY_TYPES.find((v) => v.value === value);
+      if (!candidate) {
+        return;
+      }
+      arr.push(candidate);
+    });
+
+    return arr;
+  }, [filter.propertyType]);
 
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<Option[]>([]);
+  const [value, setValue] = useState<Option[]>(initValue);
 
   const debounced = useDebouncedCallback((propertyType: string[]) => {
     applyFilter({ propertyType });
