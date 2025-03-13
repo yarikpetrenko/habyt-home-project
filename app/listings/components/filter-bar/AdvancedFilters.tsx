@@ -52,7 +52,7 @@ const AdvancedFilters: FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="text-base font-medium">
           Filters
           <SlidersHorizontal />
         </Button>

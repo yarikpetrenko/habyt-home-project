@@ -10,7 +10,7 @@ function Input({ className, type, label, ...props }: InputProps) {
   const id = React.useId();
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {label && (
         <label
           htmlFor={id}

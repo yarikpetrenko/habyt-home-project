@@ -73,7 +73,7 @@ const PropertyTypeFilter: FC = () => {
           role="combobox"
           aria-expanded={open}
           label="Property Type"
-          className="w-[200px] justify-between rounded-none"
+          className="justify-between rounded-none"
         >
           <span className="truncate">
             {value.length
@@ -88,7 +88,7 @@ const PropertyTypeFilter: FC = () => {
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[200px]">
+      <DropdownMenuContent>
         <DropdownMenuItem onSelect={handleReset}>
           All Types Of Stay
         </DropdownMenuItem>
