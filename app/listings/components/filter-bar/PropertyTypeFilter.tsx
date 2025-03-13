@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -57,7 +59,7 @@ const PropertyTypeFilter: FC = () => {
           role="combobox"
           aria-expanded={open}
           label="Property Type"
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between rounded-none"
         >
           <span className="truncate">
             {value.length

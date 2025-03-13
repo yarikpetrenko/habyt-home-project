@@ -40,7 +40,9 @@ const MoveInDateFilter: FC = () => {
         <Button
           label="Move-in Date"
           variant={"outline"}
-          className={cn("w-[280px] justify-start text-left font-normal")}
+          className={cn(
+            "w-[280px] justify-start rounded-none text-left font-normal",
+          )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? format(date, "PPP") : <span>Pick a date</span>}
