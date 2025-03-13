@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Listing } from "../types/listing";
+import { Listing } from "@/actions/listings/schemas";
 
 interface ListingCardProps {
   listing: Listing;
@@ -21,11 +21,11 @@ function ListingCard({ listing }: ListingCardProps) {
   };
 
   // Get a description in english if available
-  const getDescription = () => {
-    const descriptions = [...(listing.roomDescriptions || [])];
-    const englishDesc = descriptions.find((desc) => desc.language === "EN");
-    return englishDesc?.description || "No description available";
-  };
+  // const getDescription = () => {
+  //   const descriptions = [...(listing.roomDescriptions || [])];
+  //   const englishDesc = descriptions.find((desc) => desc.language === "EN");
+  //   return englishDesc?.description || "No description available";
+  // };
 
   // Format currency
   const formatCurrency = (amount: number) => {
