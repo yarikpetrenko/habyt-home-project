@@ -39,11 +39,16 @@ const AdvancedFilters: FC = () => {
     };
   }, [filter.bedroomsFrom]);
 
+  const [open, setOpen] = useState<boolean>(false);
   const [roomsFrom, setRoomsFrom] = useState<number | null>(init.roomsFrom);
 
   const debounced = useDebouncedCallback((bedroomsFrom: string | null) => {
     applyFilter({ bedroomsFrom });
   }, 400);
+
+  const handleApply = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   const handleRoomsFrom = useCallback(
     (value: number | null) => {
@@ -53,8 +58,14 @@ const AdvancedFilters: FC = () => {
     [debounced],
   );
 
+  const handleClearAll = useCallback(() => {
+    handleRoomsFrom(null);
+    debounced.flush();
+    handleApply();
+  }, [debounced, handleRoomsFrom, handleApply]);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="text-base font-medium">
           Filters
@@ -81,8 +92,10 @@ const AdvancedFilters: FC = () => {
           </div>
         </div>
         <DialogFooter className="!justify-between">
-          <Button variant="link">Clear All</Button>
-          <Button>Apply</Button>
+          <Button variant="link" onClick={handleClearAll}>
+            Clear All
+          </Button>
+          <Button onClick={handleApply}>Apply</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

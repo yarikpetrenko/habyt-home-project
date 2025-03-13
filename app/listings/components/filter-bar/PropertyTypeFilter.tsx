@@ -49,6 +49,7 @@ const PropertyTypeFilter: FC = () => {
       event.preventDefault();
       setValue([]);
       debounced([]);
+      debounced.flush();
     },
     [debounced],
   );
