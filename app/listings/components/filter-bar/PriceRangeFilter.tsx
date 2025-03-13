@@ -59,7 +59,7 @@ const PriceRangeFilter: FC = () => {
   );
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full sm:max-md:col-span-2">
       <NumberFilterInput value={min} setValue={handleMin} label="Price Min" />
       <NumberFilterInput value={max} setValue={handleMax} label="Price Max" />
     </div>
