@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { PROPERTY_TYPES } from "@/constants";
@@ -44,26 +44,38 @@ const PropertyTypeFilter: FC = () => {
     applyFilter({ propertyType });
   }, 400);
 
-  useEffect(() => {
-    debounced(value.map((v) => v.value));
-  }, [value, debounced]);
+  const handleReset = useCallback(
+    (event: Event) => {
+      event.preventDefault();
+      setValue([]);
+      debounced([]);
+    },
+    [debounced],
+  );
 
-  const handleReset = useCallback((event: Event) => {
-    event.preventDefault();
-    setValue([]);
-  }, []);
+  const handleSelect = useCallback(
+    (event: Event, newValue: Option) => {
+      event.preventDefault();
+      setValue((oldValue) => {
+        const result = [...oldValue];
 
-  const handleSelect = useCallback((event: Event, newValue: Option) => {
-    event.preventDefault();
-    setValue((oldValue) => {
-      const candidateIndex = oldValue.some((v) => v.value === newValue.value);
+        const candidateIndex = result.findIndex(
+          (v) => v.value === newValue.value,
+        );
 
-      if (candidateIndex) {
-        return oldValue.filter((v) => v.value !== newValue.value);
-      }
-      return [...oldValue, newValue];
-    });
-  }, []);
+        if (candidateIndex === -1) {
+          result.push(newValue);
+        } else {
+          result.splice(candidateIndex, 1);
+        }
+
+        debounced(result.map((v) => v.value));
+
+        return result;
+      });
+    },
+    [debounced],
+  );
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>

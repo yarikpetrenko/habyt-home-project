@@ -1,6 +1,6 @@
 import { useFilterListings } from "@/hooks";
 import { clamp } from "@/utils";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { NumberFilterInput } from "./NumberFilterInput";
 
@@ -30,20 +30,38 @@ const PriceRangeFilter: FC = () => {
   const [max, setMax] = useState<number | null>(init.max);
 
   const debounced = useDebouncedCallback(
-    (rentFrom: string | null, rentTo: string | null) => {
+    ({
+      rentFrom,
+      rentTo,
+    }: {
+      rentFrom?: string | null;
+      rentTo?: string | null;
+    }) => {
       applyFilter({ rentFrom, rentTo });
     },
     400,
   );
 
-  useEffect(() => {
-    debounced(!min ? null : min.toString(), !max ? null : max.toString());
-  }, [min, max, debounced]);
+  const handleMin = useCallback(
+    (value: number | null) => {
+      setMin(value);
+      debounced({ rentFrom: !value ? null : value.toString() });
+    },
+    [debounced],
+  );
+
+  const handleMax = useCallback(
+    (value: number | null) => {
+      setMax(value);
+      debounced({ rentTo: !value ? null : value.toString() });
+    },
+    [debounced],
+  );
 
   return (
     <div className="flex w-full">
-      <NumberFilterInput value={min} setValue={setMin} label="Price Min" />
-      <NumberFilterInput value={max} setValue={setMax} label="Price Max" />
+      <NumberFilterInput value={min} setValue={handleMin} label="Price Min" />
+      <NumberFilterInput value={max} setValue={handleMax} label="Price Max" />
     </div>
   );
 };

@@ -1,10 +1,8 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-
-import { format } from "date-fns";
+import { FC, useCallback, useMemo, useState } from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -18,33 +16,35 @@ import { useFilterListings } from "@/hooks";
 const MoveInDateFilter: FC = () => {
   const { filter, applyFilter } = useFilterListings();
 
+  const isDateDisabled = useCallback((date: Date | Moment) => {
+    const momentDate = date instanceof Date ? moment(date) : date;
+    return momentDate.isBefore(moment().subtract(1, "day"));
+  }, []);
+
   const initDate = useMemo((): Date => {
     try {
       const value = moment(filter.moveInDate);
-      if (value.isBefore(moment().subtract(1, "day")) || !value.isValid()) {
+      if (isDateDisabled(value) || !value.isValid()) {
         throw new Error("Invalid date");
       }
       return value.toDate();
     } catch {
       return new Date();
     }
-  }, [filter.moveInDate]);
+  }, [filter.moveInDate, isDateDisabled]);
 
   const [open, setOpen] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(initDate);
 
-  useEffect(() => {
-    applyFilter({ moveInDate: moment(date).format("YYYY-MM-DD") });
-  }, [date, applyFilter]);
-
-  const handleSelect = useCallback((day: Date | undefined) => {
-    if (!day) {
-      setDate(new Date());
-      return;
-    }
-    setDate(day);
-    setOpen(false);
-  }, []);
+  const handleSelect = useCallback(
+    (day: Date | undefined) => {
+      const newDate = day ?? new Date();
+      setDate(newDate);
+      setOpen(false);
+      applyFilter({ moveInDate: moment(newDate).format("YYYY-MM-DD") });
+    },
+    [applyFilter],
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -55,7 +55,11 @@ const MoveInDateFilter: FC = () => {
           className={cn("justify-start rounded-none text-left font-normal")}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? (
+            moment(date).format("MMMM Do, YYYY")
+          ) : (
+            <span>Pick a date</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -64,7 +68,7 @@ const MoveInDateFilter: FC = () => {
           selected={date}
           onSelect={handleSelect}
           initialFocus
-          disabled={(date) => date < moment().subtract(1, "day").toDate()}
+          disabled={isDateDisabled}
         />
       </PopoverContent>
     </Popover>

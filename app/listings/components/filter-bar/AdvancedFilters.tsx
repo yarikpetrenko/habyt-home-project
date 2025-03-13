@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -45,9 +45,13 @@ const AdvancedFilters: FC = () => {
     applyFilter({ bedroomsFrom });
   }, 400);
 
-  useEffect(() => {
-    debounced(!roomsFrom ? null : roomsFrom.toString());
-  }, [roomsFrom, debounced]);
+  const handleRoomsFrom = useCallback(
+    (value: number | null) => {
+      setRoomsFrom(value);
+      debounced(!value ? null : value.toString());
+    },
+    [debounced],
+  );
 
   return (
     <Dialog>
@@ -71,7 +75,7 @@ const AdvancedFilters: FC = () => {
             <span className="text-base font-bold">Number of rooms</span>
             <NumberFilterInput
               value={roomsFrom}
-              setValue={setRoomsFrom}
+              setValue={handleRoomsFrom}
               label="Rooms Min"
             />
           </div>
