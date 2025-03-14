@@ -1,22 +1,20 @@
 import { FC } from "react";
-import { getListings } from "@/actions/listings";
 import { CitySelectContent } from "./CitySelectContent";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCities } from "@/actions/cities";
 
 const CitySelect: FC = async () => {
-  const res = await getListings({});
+  const res = await getCities();
 
   if (!res.ok) {
     return null;
   }
 
-  const listings = res.data;
+  const cities = res.data;
 
-  const cities = Array.from(
-    new Set(listings.map((listing) => listing.city)),
-  ).sort();
+  const cityNames = cities.map((city) => city.name);
 
-  return <CitySelectContent cities={cities} />;
+  return <CitySelectContent cities={cityNames} />;
 };
 
 const CitySelectFallback: FC = () => {

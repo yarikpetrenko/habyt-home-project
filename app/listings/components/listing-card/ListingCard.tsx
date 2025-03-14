@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Listing } from "@/actions/listings/schemas";
+import { Listing } from "@/actions/listings";
 
 interface ListingCardProps {
   listing: Listing;

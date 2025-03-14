@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { Marker } from "@adamscybot/react-leaflet-component-marker";
 import { useListings } from "@/hooks";
 import { getPointsCentroid } from "@/utils";
-import { Listing } from "@/actions/listings/schemas";
+import { Listing } from "@/actions/listings";
 import { LatLngTuple } from "leaflet";
 
 const Content: FC = () => {

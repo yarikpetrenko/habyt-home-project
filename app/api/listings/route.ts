@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GetListingsResponse } from "@/actions/listings/schemas";
+import { GetListingsResponse } from "@/actions/listings";
 import { getListings } from "@/actions/listings";
 import { getListingsRequestSortParametersSchema } from "./schemas";
 

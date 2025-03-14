@@ -1,5 +1,5 @@
 import { ResponsePagination } from "@/actions/common";
-import { Listing } from "@/actions/listings/schemas";
+import { Listing } from "@/actions/listings";
 import { DEFAULT_RESPONSE_PAGINATION } from "@/constants";
 import { useListingsQuery } from "@/data";
 import { useEffect, useState } from "react";

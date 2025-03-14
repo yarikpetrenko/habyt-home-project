@@ -1,4 +1,4 @@
-import { GetListingsResponse } from "@/actions/listings/schemas";
+import { GetListingsResponse } from "@/actions/listings";
 import { createUrl } from "@/utils";
 import { useSearchParams } from "next/navigation";
 import useSWR, { Fetcher } from "swr";
