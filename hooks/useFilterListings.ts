@@ -10,6 +10,7 @@ const useFilterListings = () => {
   const searchParams = useSearchParams();
 
   const filter = useMemo((): {
+    page: string | null;
     city: string | null;
     propertyType: string[];
     moveInDate: string | null;
@@ -18,6 +19,7 @@ const useFilterListings = () => {
     bedroomsFrom: string | null;
   } => {
     return {
+      page: searchParams.get("page"),
       city: searchParams.get("city"),
       propertyType: searchParams.getAll("shareType"),
       moveInDate: searchParams.get("bookableOn"),
@@ -54,6 +56,7 @@ const useFilterListings = () => {
 
   const applyFilter = useCallback(
     ({
+      page,
       city,
       propertyType,
       moveInDate,
@@ -61,6 +64,7 @@ const useFilterListings = () => {
       rentTo,
       bedroomsFrom,
     }: {
+      page?: string | null;
       city?: string | null;
       propertyType?: string[] | null;
       moveInDate?: string | null;
@@ -70,6 +74,7 @@ const useFilterListings = () => {
     }) => {
       const newSearchParams = new URLSearchParams(searchParams);
 
+      handleFilter("page", page, newSearchParams);
       handleFilter("city", city, newSearchParams);
       handleFilter("shareType", propertyType, newSearchParams);
       handleFilter("bookableOn", moveInDate, newSearchParams);

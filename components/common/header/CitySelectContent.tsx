@@ -31,7 +31,10 @@ const CitySelectContent: FC<Props> = ({ cities }) => {
 
   const handleSelect = useCallback(
     (city: string) => {
-      applyFilter({ city: city === ALL_CITIES_OPTION ? null : city });
+      applyFilter({
+        page: null,
+        city: city === ALL_CITIES_OPTION ? null : city,
+      });
     },
     [applyFilter],
   );
