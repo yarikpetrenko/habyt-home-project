@@ -34,7 +34,7 @@ const useListingsParams = () => {
     price: string | null;
   } => {
     return {
-      price: searchParams.get("page"),
+      price: searchParams.get("sort[price]"),
     };
   }, [searchParams]);
 

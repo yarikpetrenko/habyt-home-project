@@ -1,15 +1,17 @@
 "use client";
 
-import { FC, useCallback, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useListingsParams } from "@/hooks";
 import { RequestSortOrder } from "@/actions/common";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/utils";
 
 const OPTIONS = [
   {
@@ -25,11 +27,28 @@ const OPTIONS = [
 type SortValue = (typeof OPTIONS)[number]["value"];
 
 const ListingsSort: FC = () => {
-  const { applySort } = useListingsParams();
-  const [value, setValue] = useState<SortValue>(OPTIONS[0].value);
+  const { sort, applySort } = useListingsParams();
+  const [open, setOpen] = useState<boolean>(false);
+
+  const initValue = useMemo((): SortValue => {
+    if (sort.price === RequestSortOrder.ASC) {
+      return "price-asc";
+    }
+    return "price-desc";
+  }, [sort.price]);
+
+  const [value, setValue] = useState<SortValue>(initValue);
+
+  const label = useMemo(() => {
+    const option = OPTIONS.find((v) => v.value === value);
+    if (!option) {
+      return "";
+    }
+    return option.label;
+  }, [value]);
 
   const handleSelect = useCallback(
-    (value: SortValue) => {
+    (event: Event, value: SortValue) => {
       setValue(value);
       switch (value) {
         case "price-desc":
@@ -47,18 +66,35 @@ const ListingsSort: FC = () => {
 
   return (
     <div className="mb-6 flex w-full items-center justify-end">
-      <Select value={value} onValueChange={handleSelect}>
-        <SelectTrigger>
-          <SelectValue placeholder="Sort" />
-        </SelectTrigger>
-        <SelectContent>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            label="Sort"
+            className="justify-between rounded-none"
+          >
+            <span>{label}</span>
+            <ChevronDown
+              className={cn(
+                "opacity-50 transition-transform",
+                open && "rotate-180",
+              )}
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
           {OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
+            <DropdownMenuItem
+              key={option.value}
+              onSelect={(e) => handleSelect(e, option.value)}
+            >
               {option.label}
-            </SelectItem>
+            </DropdownMenuItem>
           ))}
-        </SelectContent>
-      </Select>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
