@@ -3,6 +3,7 @@
 import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/utils";
+import { RequestSortOrder } from "@/actions/common";
 
 const useListingsParams = () => {
   const router = useRouter();
@@ -26,6 +27,14 @@ const useListingsParams = () => {
       rentFrom: searchParams.get("rentFrom"),
       rentTo: searchParams.get("rentTo"),
       bedroomsFrom: searchParams.get("bedroomsFrom"),
+    };
+  }, [searchParams]);
+
+  const sort = useMemo((): {
+    price: string | null;
+  } => {
+    return {
+      price: searchParams.get("page"),
     };
   }, [searchParams]);
 
@@ -87,7 +96,18 @@ const useListingsParams = () => {
     [router, pathname, searchParams, handleParam],
   );
 
-  return { filter, applyFilter };
+  const applySort = useCallback(
+    ({ price }: { price?: RequestSortOrder | null }) => {
+      const newSearchParams = new URLSearchParams(searchParams);
+
+      handleParam("sort[price]", price, newSearchParams);
+
+      router.replace(createUrl(pathname, newSearchParams));
+    },
+    [router, pathname, searchParams, handleParam],
+  );
+
+  return { filter, sort, applyFilter, applySort };
 };
 
 export { useListingsParams };

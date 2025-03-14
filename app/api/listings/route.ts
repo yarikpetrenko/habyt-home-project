@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GetListingsResponse } from "@/actions/listings/schemas";
 import { getListings } from "@/actions/listings";
+import { getListingsRequestSortParametersSchema } from "./schemas";
 
 export async function GET(
   request: NextRequest,
@@ -33,6 +34,15 @@ export async function GET(
     ? parseFloat(searchParams.get("rentTo")!)
     : null;
 
+  // Sort parameters
+  const sortPrice = searchParams.get("sort[price]");
+
+  const sortParsed = getListingsRequestSortParametersSchema.safeParse({
+    price: sortPrice,
+  });
+
+  const sort = sortParsed.success ? sortParsed.data : {};
+
   // Get listings using action
   const res = await getListings({
     page,
@@ -52,6 +62,7 @@ export async function GET(
       rentFrom,
       rentTo,
     },
+    sort,
   });
 
   // Return the filtered data as JSON

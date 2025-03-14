@@ -24,7 +24,7 @@ export interface GetListingsProps {
     rentTo?: number | null;
   };
   sort?: {
-    price?: RequestSortOrder;
+    price?: RequestSortOrder | null;
   };
 }
 
