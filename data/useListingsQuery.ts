@@ -6,17 +6,14 @@ import useSWR, { Fetcher } from "swr";
 const useListingsQuery = () => {
   const searchParams = useSearchParams();
   const { data, error, isLoading, isValidating, mutate } = useSWR(
-    ["/api/listings", searchParams],
+    createUrl("/api/listings", searchParams),
     fetcher,
   );
   return { data, error, isLoading, isValidating, mutate };
 };
 
-const fetcher: Fetcher<
-  GetListingsResponse,
-  [string, URLSearchParams]
-> = async ([path, params]) => {
-  const res = await fetch(createUrl(path, params), {
+const fetcher: Fetcher<GetListingsResponse, string> = async (url) => {
+  const res = await fetch(url, {
     cache: "force-cache",
     next: { revalidate: 60 },
   });

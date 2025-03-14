@@ -1,3 +1,5 @@
+"use client";
+
 import { useFilterListings } from "@/hooks";
 import { clamp } from "@/utils";
 import { FC, useCallback, useMemo, useState } from "react";
