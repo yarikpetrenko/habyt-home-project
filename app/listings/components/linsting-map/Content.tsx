@@ -3,13 +3,14 @@
 import { FC, useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { Marker } from "@adamscybot/react-leaflet-component-marker";
-import { useListings } from "@/hooks";
+import { useListings, useListingsParams } from "@/hooks";
 import { getPointsCentroid } from "@/utils";
 import { Listing } from "@/actions/listings";
 import { LatLngTuple } from "leaflet";
 
 const Content: FC = () => {
   const { listings } = useListings();
+  const { filter } = useListingsParams();
 
   const markersCentroid = useMemo(
     () =>
@@ -30,7 +31,7 @@ const Content: FC = () => {
         scrollWheelZoom={false}
         className="z-10 h-full w-full"
       >
-        <Recenter centroid={markersCentroid} />
+        <Recenter isCitySelected={!!filter.city} centroid={markersCentroid} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -69,15 +70,23 @@ const MarkerIcon: FC<MarkerIconProps> = ({ listing }) => {
 };
 
 interface RecenterProps {
+  isCitySelected: boolean;
   centroid: LatLngTuple;
 }
 
-const Recenter: FC<RecenterProps> = ({ centroid }) => {
+const Recenter: FC<RecenterProps> = ({ isCitySelected, centroid }) => {
   const map = useMap();
 
   useEffect(() => {
+    if (!isCitySelected) {
+      map.setView([30, 0]);
+      map.setZoom(1);
+      return;
+    }
+
     map.setView(centroid);
-  }, [map, centroid]);
+    map.setZoom(12);
+  }, [map, isCitySelected, centroid]);
 
   return null;
 };
