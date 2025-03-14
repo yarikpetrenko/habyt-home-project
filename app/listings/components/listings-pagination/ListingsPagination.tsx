@@ -1,13 +1,14 @@
 "use client";
 
 import { FC, useCallback, useMemo } from "react";
-import { useListings } from "@/hooks";
+import { useListings, useMediaQuery } from "@/hooks";
 import { useSearchParams } from "next/navigation";
 import { generatePaginationPages } from "@/utils";
 
 const ListingsPagination: FC = () => {
   const searchParams = useSearchParams();
   const { pagination } = useListings();
+  const isSm = useMediaQuery("(width >= 40rem)");
 
   const pages = useMemo(
     () =>
@@ -43,7 +44,7 @@ const ListingsPagination: FC = () => {
   return (
     <>
       {pagination.totalPages > 1 && (
-        <div className="my-6 flex justify-center">
+        <div className="sm my-6 flex justify-center">
           <div className="flex space-x-1">
             <button
               onClick={() => handlePageChange(pagination.currentPage - 1)}
@@ -57,20 +58,26 @@ const ListingsPagination: FC = () => {
               Previous
             </button>
 
-            {/* Page numbers */}
-            {pages.map((page, i) => (
-              <button
-                key={i}
-                onClick={() => handlePageChange(Math.abs(page) - 1)}
-                className={`rounded-md px-4 py-2 ${
-                  pagination.currentPage === page - 1
-                    ? "border border-blue-600 bg-blue-600 text-white"
-                    : "border border-gray-300 bg-white text-gray-800 hover:bg-gray-100"
-                }`}
-              >
-                {page < 0 ? "..." : page}
-              </button>
-            ))}
+            {/* Page numbers mobile */}
+            {!isSm && (
+              <span className="flex items-center justify-center px-4 text-base font-medium">{`${pagination.currentPage + 1} / ${pagination.totalPages}`}</span>
+            )}
+
+            {/* Page numbers >= sm */}
+            {isSm &&
+              pages.map((page, i) => (
+                <button
+                  key={i}
+                  onClick={() => handlePageChange(Math.abs(page) - 1)}
+                  className={`rounded-md px-4 py-2 ${
+                    pagination.currentPage === page - 1
+                      ? "border border-blue-600 bg-blue-600 text-white"
+                      : "border border-gray-300 bg-white text-gray-800 hover:bg-gray-100"
+                  }`}
+                >
+                  {page < 0 ? "..." : page}
+                </button>
+              ))}
 
             <button
               onClick={() => handlePageChange(pagination.currentPage + 1)}

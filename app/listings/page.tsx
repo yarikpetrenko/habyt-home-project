@@ -10,7 +10,7 @@ export default function Listings() {
       <FilterBar />
       <LinstingMap />
       <ListingsSort />
-      {/* <ListingsGrid /> */}
+      <ListingsGrid />
       <ListingsPagination />
     </main>
   );
