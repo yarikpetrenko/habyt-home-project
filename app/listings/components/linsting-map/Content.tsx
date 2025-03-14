@@ -4,13 +4,12 @@ import { FC, useEffect, useMemo } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { Marker } from "@adamscybot/react-leaflet-component-marker";
 import { useListings } from "@/hooks";
-import { LinstingMapFallback } from "./LinstingMap";
 import { getPointsCentroid } from "@/utils";
 import { Listing } from "@/actions/listings/schemas";
 import { LatLngTuple } from "leaflet";
 
 const Content: FC = () => {
-  const { listings, isLoading } = useListings();
+  const { listings } = useListings();
 
   const markersCentroid = useMemo(
     () =>
@@ -23,25 +22,20 @@ const Content: FC = () => {
     [listings],
   );
 
-  if (!listings || isLoading) {
-    return <LinstingMapFallback />;
-  }
-
   return (
     <div className="mt-4 mb-10 h-[250px] w-full">
-      <span className="bg-white px-2 py-1 text-nowrap" />
       <MapContainer
         center={markersCentroid}
         zoom={12}
         scrollWheelZoom={false}
-        className="h-full w-full"
+        className="z-10 h-full w-full"
       >
         <Recenter centroid={markersCentroid} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {listings.map((listing) => (
+        {(listings ?? []).map((listing) => (
           <Marker
             key={listing.referenceId}
             position={[listing.propertyLatitude, listing.propertyLongitude]}
