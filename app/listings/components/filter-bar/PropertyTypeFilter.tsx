@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/utils";
-import { useFilterListings } from "@/hooks";
+import { useListingsParams } from "@/hooks";
 import { useDebouncedCallback } from "use-debounce";
 
 type Option = {
@@ -21,7 +21,7 @@ type Option = {
 };
 
 const PropertyTypeFilter: FC = () => {
-  const { filter, applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useListingsParams();
 
   const initValue = useMemo((): Option[] => {
     const arr: Option[] = [];

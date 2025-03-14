@@ -1,4 +1,8 @@
-import { ResponseDTO, ResponsePagination } from "@/actions/common";
+import {
+  RequestSortOrder,
+  ResponseDTO,
+  ResponsePagination,
+} from "@/actions/common";
 import { Listing } from "./listings-schema";
 
 export interface GetListingsProps {
@@ -18,6 +22,9 @@ export interface GetListingsProps {
     bedroomsTo?: number | null;
     rentFrom?: number | null;
     rentTo?: number | null;
+  };
+  sort?: {
+    price?: RequestSortOrder;
   };
 }
 

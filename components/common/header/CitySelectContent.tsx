@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useCallback, useMemo, useState } from "react";
-import { useFilterListings } from "@/hooks";
+import { useListingsParams } from "@/hooks";
 import {
   HoverCard,
   HoverCardContent,
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const CitySelectContent: FC<Props> = ({ cities }) => {
-  const { filter, applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useListingsParams();
   const [open, setOpen] = useState<boolean>(false);
 
   const currentCity = useMemo((): string | null => {

@@ -15,11 +15,11 @@ import { SlidersHorizontal } from "lucide-react";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { NumberFilterInput } from "./NumberFilterInput";
 import { useDebouncedCallback } from "use-debounce";
-import { useFilterListings } from "@/hooks";
+import { useListingsParams } from "@/hooks";
 import { clamp } from "@/utils";
 
 const AdvancedFilters: FC = () => {
-  const { filter, applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useListingsParams();
 
   const init = useMemo(() => {
     const parse = (value: string | null): number | null => {

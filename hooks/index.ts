@@ -1,2 +1,2 @@
-export * from "./useFilterListings";
+export * from "./useListingsParams";
 export * from "./useListings";

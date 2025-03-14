@@ -1,13 +1,13 @@
 "use client";
 
-import { useFilterListings } from "@/hooks";
+import { useListingsParams } from "@/hooks";
 import { clamp } from "@/utils";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { NumberFilterInput } from "./NumberFilterInput";
 
 const PriceRangeFilter: FC = () => {
-  const { filter, applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useListingsParams();
 
   const init = useMemo(() => {
     const parse = (value: string | null): number | null => {

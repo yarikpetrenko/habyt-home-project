@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createUrl } from "@/utils";
 
-const useFilterListings = () => {
+const useListingsParams = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ const useFilterListings = () => {
     };
   }, [searchParams]);
 
-  const handleFilter = useCallback(
+  const handleParam = useCallback(
     (
       label: string,
       value: string | string[] | null | undefined,
@@ -74,20 +74,20 @@ const useFilterListings = () => {
     }) => {
       const newSearchParams = new URLSearchParams(searchParams);
 
-      handleFilter("page", page, newSearchParams);
-      handleFilter("city", city, newSearchParams);
-      handleFilter("shareType", propertyType, newSearchParams);
-      handleFilter("bookableOn", moveInDate, newSearchParams);
-      handleFilter("rentFrom", rentFrom, newSearchParams);
-      handleFilter("rentTo", rentTo, newSearchParams);
-      handleFilter("bedroomsFrom", bedroomsFrom, newSearchParams);
+      handleParam("page", page, newSearchParams);
+      handleParam("city", city, newSearchParams);
+      handleParam("shareType", propertyType, newSearchParams);
+      handleParam("bookableOn", moveInDate, newSearchParams);
+      handleParam("rentFrom", rentFrom, newSearchParams);
+      handleParam("rentTo", rentTo, newSearchParams);
+      handleParam("bedroomsFrom", bedroomsFrom, newSearchParams);
 
       router.replace(createUrl(pathname, newSearchParams));
     },
-    [router, pathname, searchParams, handleFilter],
+    [router, pathname, searchParams, handleParam],
   );
 
   return { filter, applyFilter };
 };
 
-export { useFilterListings };
+export { useListingsParams };

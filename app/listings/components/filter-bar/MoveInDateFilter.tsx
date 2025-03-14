@@ -11,10 +11,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useFilterListings } from "@/hooks";
+import { useListingsParams } from "@/hooks";
 
 const MoveInDateFilter: FC = () => {
-  const { filter, applyFilter } = useFilterListings();
+  const { filter, applyFilter } = useListingsParams();
 
   const isDateDisabled = useCallback((date: Date | Moment) => {
     const momentDate = date instanceof Date ? moment(date) : date;

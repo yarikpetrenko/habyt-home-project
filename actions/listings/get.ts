@@ -3,11 +3,13 @@
 import { GetListingsProps, GetListingsResponse, Listing } from "./schemas";
 import fs from "fs";
 import path from "path";
+import { RequestSortOrder } from "../common";
 
 export const getListings = async ({
   page = 0,
   pageSize = 100,
   filter = {},
+  sort = {},
 }: GetListingsProps): Promise<GetListingsResponse> => {
   try {
     // Read the JSON file
@@ -118,6 +120,14 @@ export const getListings = async ({
         (listing) => listing.rentNet <= rentTo,
       );
     }
+
+    // Sort
+    filteredData.sort((a, b) => {
+      if (sort.price === RequestSortOrder.ASC) {
+        return a.rentNet - b.rentNet;
+      }
+      return b.rentNet - a.rentNet;
+    });
 
     // Apply pagination
     const startIndex = page * pageSize;
