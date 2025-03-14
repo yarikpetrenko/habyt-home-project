@@ -41,7 +41,7 @@ const PropertyTypeFilter: FC = () => {
   const [value, setValue] = useState<Option[]>(initValue);
 
   const debounced = useDebouncedCallback((propertyType: string[]) => {
-    applyFilter({ propertyType });
+    applyFilter({ page: null, propertyType });
   }, 400);
 
   const handleReset = useCallback(

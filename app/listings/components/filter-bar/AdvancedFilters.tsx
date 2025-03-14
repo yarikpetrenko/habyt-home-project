@@ -43,7 +43,7 @@ const AdvancedFilters: FC = () => {
   const [roomsFrom, setRoomsFrom] = useState<number | null>(init.roomsFrom);
 
   const debounced = useDebouncedCallback((bedroomsFrom: string | null) => {
-    applyFilter({ bedroomsFrom });
+    applyFilter({ page: null, bedroomsFrom });
   }, 400);
 
   const handleApply = useCallback(() => {

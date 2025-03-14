@@ -39,7 +39,7 @@ const PriceRangeFilter: FC = () => {
       rentFrom?: string | null;
       rentTo?: string | null;
     }) => {
-      applyFilter({ rentFrom, rentTo });
+      applyFilter({ page: null, rentFrom, rentTo });
     },
     400,
   );

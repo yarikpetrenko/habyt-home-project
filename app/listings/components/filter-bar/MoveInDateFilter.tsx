@@ -41,7 +41,10 @@ const MoveInDateFilter: FC = () => {
       const newDate = day ?? new Date();
       setDate(newDate);
       setOpen(false);
-      applyFilter({ moveInDate: moment(newDate).format("YYYY-MM-DD") });
+      applyFilter({
+        page: null,
+        moveInDate: moment(newDate).format("YYYY-MM-DD"),
+      });
     },
     [applyFilter],
   );
