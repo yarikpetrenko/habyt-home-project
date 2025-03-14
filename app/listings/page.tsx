@@ -1,8 +1,8 @@
 import { FilterBar } from "./components/filter-bar";
 import { LinstingMap } from "./components/linsting-map";
 import { ListingsGrid } from "./components/listings-grid";
+import { ListingsPagination } from "./components/listings-pagination";
 import { ListingsSort } from "./components/listings-sort/ListingsSort";
-import { Pagination } from "./components/pagination";
 
 export default function Listings() {
   return (
@@ -10,8 +10,8 @@ export default function Listings() {
       <FilterBar />
       <LinstingMap />
       <ListingsSort />
-      <ListingsGrid />
-      <Pagination />
+      {/* <ListingsGrid /> */}
+      <ListingsPagination />
     </main>
   );
 }
