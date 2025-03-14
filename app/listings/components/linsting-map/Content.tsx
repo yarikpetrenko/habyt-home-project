@@ -1,12 +1,13 @@
 "use client";
 
-import { FC, useMemo } from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { FC, useEffect, useMemo } from "react";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { Marker } from "@adamscybot/react-leaflet-component-marker";
 import { useListings } from "@/hooks";
 import { LinstingMapFallback } from "./LinstingMap";
 import { getPointsCentroid } from "@/utils";
 import { Listing } from "@/actions/listings/schemas";
+import { LatLngTuple } from "leaflet";
 
 const Content: FC = () => {
   const { listings, isLoading } = useListings();
@@ -35,6 +36,7 @@ const Content: FC = () => {
         scrollWheelZoom={false}
         className="h-full w-full"
       >
+        <Recenter centroid={markersCentroid} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -70,6 +72,20 @@ const MarkerIcon: FC<MarkerIconProps> = ({ listing }) => {
       {text}
     </div>
   );
+};
+
+interface RecenterProps {
+  centroid: LatLngTuple;
+}
+
+const Recenter: FC<RecenterProps> = ({ centroid }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    map.setView(centroid);
+  }, [map, centroid]);
+
+  return null;
 };
 
 export { Content };
