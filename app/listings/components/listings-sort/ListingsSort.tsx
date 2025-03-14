@@ -27,7 +27,7 @@ const OPTIONS = [
 type SortValue = (typeof OPTIONS)[number]["value"];
 
 const ListingsSort: FC = () => {
-  const { sort, applySort } = useListingsParams();
+  const { sort, applySort, applyFilter } = useListingsParams();
   const [open, setOpen] = useState<boolean>(false);
 
   const initValue = useMemo((): SortValue => {
@@ -53,15 +53,17 @@ const ListingsSort: FC = () => {
       switch (value) {
         case "price-desc":
           applySort({ price: null });
+          applyFilter({ page: null });
           break;
         case "price-asc":
           applySort({ price: RequestSortOrder.ASC });
+          applyFilter({ page: null });
           break;
         default:
           break;
       }
     },
-    [applySort],
+    [applySort, applyFilter],
   );
 
   return (
