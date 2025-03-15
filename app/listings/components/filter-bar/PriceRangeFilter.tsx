@@ -5,6 +5,7 @@ import { clamp } from "@/utils";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { NumberFilterInput } from "./NumberFilterInput";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PriceRangeFilter: FC = () => {
   const { filter, applyFilter } = useListingsParams();
@@ -68,4 +69,8 @@ const PriceRangeFilter: FC = () => {
   );
 };
 
-export { PriceRangeFilter };
+const PriceRangeFilterFallback: FC = () => {
+  return <Skeleton className="h-10 w-full sm:max-md:col-span-2" />;
+};
+
+export { PriceRangeFilter, PriceRangeFilterFallback };

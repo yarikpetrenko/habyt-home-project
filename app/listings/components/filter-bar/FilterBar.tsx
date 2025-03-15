@@ -1,7 +1,10 @@
-import { PropertyTypeFilter } from "./PropertyTypeFilter";
-import { MoveInDateFilter } from "./MoveInDateFilter";
-import { PriceRangeFilter } from "./PriceRangeFilter";
-import { AdvancedFilters } from "./AdvancedFilters";
+import {
+  PropertyTypeFilter,
+  PropertyTypeFilterFallback,
+} from "./PropertyTypeFilter";
+import { MoveInDateFilter, MoveInDateFilterFallback } from "./MoveInDateFilter";
+import { PriceRangeFilter, PriceRangeFilterFallback } from "./PriceRangeFilter";
+import { AdvancedFilters, AdvancedFiltersFallback } from "./AdvancedFilters";
 import { Suspense } from "react";
 
 function FilterBar() {
@@ -10,17 +13,17 @@ function FilterBar() {
       <h2 className="mb-4 text-lg font-semibold">Filter Listings</h2>
       <div className="flex w-full flex-col items-center gap-x-2 gap-y-4 md:flex-row">
         <div className="grid w-full grid-cols-1 grid-rows-3 gap-y-4 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-1">
-          <Suspense>
+          <Suspense fallback={<MoveInDateFilterFallback />}>
             <MoveInDateFilter />
           </Suspense>
-          <Suspense>
+          <Suspense fallback={<PropertyTypeFilterFallback />}>
             <PropertyTypeFilter />
           </Suspense>
-          <Suspense>
+          <Suspense fallback={<PriceRangeFilterFallback />}>
             <PriceRangeFilter />
           </Suspense>
         </div>
-        <Suspense>
+        <Suspense fallback={<AdvancedFiltersFallback />}>
           <AdvancedFilters />
         </Suspense>
       </div>

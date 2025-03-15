@@ -14,6 +14,7 @@ import {
 import { cn } from "@/utils";
 import { useListingsParams } from "@/hooks";
 import { useDebouncedCallback } from "use-debounce";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Option = {
   label: string;
@@ -122,4 +123,8 @@ const PropertyTypeFilter: FC = () => {
   );
 };
 
-export { PropertyTypeFilter };
+const PropertyTypeFilterFallback: FC = () => {
+  return <Skeleton className="h-10 w-full" />;
+};
+
+export { PropertyTypeFilter, PropertyTypeFilterFallback };

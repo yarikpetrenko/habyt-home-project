@@ -17,6 +17,7 @@ import { NumberFilterInput } from "./NumberFilterInput";
 import { useDebouncedCallback } from "use-debounce";
 import { useListingsParams } from "@/hooks";
 import { clamp } from "@/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AdvancedFilters: FC = () => {
   const { filter, applyFilter } = useListingsParams();
@@ -105,4 +106,8 @@ const AdvancedFilters: FC = () => {
   );
 };
 
-export { AdvancedFilters };
+const AdvancedFiltersFallback: FC = () => {
+  return <Skeleton className="h-10 w-24" />;
+};
+
+export { AdvancedFilters, AdvancedFiltersFallback };

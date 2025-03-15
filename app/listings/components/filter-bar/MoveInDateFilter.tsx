@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useListingsParams } from "@/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const MoveInDateFilter: FC = () => {
   const { filter, applyFilter } = useListingsParams();
@@ -78,4 +79,8 @@ const MoveInDateFilter: FC = () => {
   );
 };
 
-export { MoveInDateFilter };
+const MoveInDateFilterFallback: FC = () => {
+  return <Skeleton className="h-10 w-full" />;
+};
+
+export { MoveInDateFilter, MoveInDateFilterFallback };
