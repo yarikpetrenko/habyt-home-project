@@ -97,9 +97,16 @@ const useListingsParams = () => {
   );
 
   const applySort = useCallback(
-    ({ price }: { price?: RequestSortOrder | null }) => {
+    ({
+      page,
+      price,
+    }: {
+      page?: string | null;
+      price?: RequestSortOrder | null;
+    }) => {
       const newSearchParams = new URLSearchParams(searchParams);
 
+      handleParam("page", page, newSearchParams);
       handleParam("sort[price]", price, newSearchParams);
 
       router.replace(createUrl(pathname, newSearchParams));
