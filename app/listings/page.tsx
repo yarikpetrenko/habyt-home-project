@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { FilterBar } from "./components/filter-bar";
 import { LinstingMap } from "./components/linsting-map";
 import { ListingsGrid } from "./components/listings-grid";
@@ -9,9 +10,15 @@ export default function Listings() {
     <main className="mx-auto max-w-7xl p-4">
       <FilterBar />
       <LinstingMap />
-      <ListingsSort />
-      <ListingsGrid />
-      <ListingsPagination />
+      <Suspense>
+        <ListingsSort />
+      </Suspense>
+      <Suspense>
+        <ListingsGrid />
+      </Suspense>
+      <Suspense>
+        <ListingsPagination />
+      </Suspense>
     </main>
   );
 }
