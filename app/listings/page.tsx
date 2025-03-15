@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { FilterBar } from "./components/filter-bar";
 import { LinstingMap } from "./components/linsting-map";
-import { ListingsGrid } from "./components/listings-grid";
+import { ListingsGrid, ListingsGridFallback } from "./components/listings-grid";
 import {
   ListingsPagination,
   ListingsPaginationFallback,
@@ -16,7 +16,7 @@ export default function Listings() {
       <Suspense fallback={<ListingsSortFallback />}>
         <ListingsSort />
       </Suspense>
-      <Suspense>
+      <Suspense fallback={<ListingsGridFallback />}>
         <ListingsGrid />
       </Suspense>
       <Suspense fallback={<ListingsPaginationFallback />}>
