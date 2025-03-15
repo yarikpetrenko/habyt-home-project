@@ -49,8 +49,8 @@ const CitySelectContent: FC<Props> = ({ cities }) => {
           />
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className="w-auto">
-        <div className="gap-x- grid grid-cols-4 gap-1">
+      <HoverCardContent className="w-auto max-w-full">
+        <div className="gap-x- grid grid-cols-3 gap-1 sm:grid-cols-4">
           {[ALL_CITIES_OPTION, ...cities].map((city) => (
             <Button
               key={city}
