@@ -2,7 +2,7 @@ import { FilterBar } from "./components/filter-bar";
 import { LinstingMap } from "./components/linsting-map";
 import { ListingsGrid } from "./components/listings-grid";
 import { ListingsPagination } from "./components/listings-pagination";
-import { ListingsSort } from "./components/listings-sort/ListingsSort";
+import { ListingsSort } from "./components/listings-sort";
 
 export default function Listings() {
   return (
